@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Memory - 家庭记忆</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=endless%20grassland%20with%20flowers%2C%20white%20clouds%2C%20kites%2C%20cinematic%20style%2C%20atmospheric%2C%20sunny%20day&image_size=landscape_16_9');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        header {
+            background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=grassland%20with%20two%20chinese%20little%20girls%20with%20black%20hair%20flying%20kites%2C%20blue%20sky%20white%20clouds%2C%20cinematic%20style%2C%20atmospheric%2C%20sunny%20day&image_size=landscape_16_9');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h2, h3 {
+            font-family: 'Nunito', cursive;
+            font-weight: 700;
+        }
+        
+        h1 {
+            font-family: 'Comic Neue', cursive;
+            font-weight: 700;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        nav {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            padding: 0 1rem;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+        
+        nav li {
+            margin: 0 1rem;
+        }
+        
+        nav a {
+            display: block;
+            padding: 1rem;
+            color: #6a994e;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        nav a:hover {
+            color: #4a7c32;
+            background-color: rgba(143, 185, 150, 0.2);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        section {
+            margin-bottom: 3rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        h2 {
+            color: #6a994e;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 2px solid rgba(143, 185, 150, 0.3);
+            padding-bottom: 0.5rem;
+        }
+        
+        h3 {
+            color: #8fb996;
+            margin-bottom: 1rem;
+        }
+        
+        .family-members {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .member-card {
+            background-color: rgba(143, 185, 150, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .member-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #8fb996;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-family: 'Nunito', cursive;
+        }
+        
+        .memory-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .memory-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #8fb996;
+            border-radius: 2px;
+        }
+        
+        .memory-item {
+            position: relative;
+            margin-bottom: 2rem;
+            background-color: rgba(143, 185, 150, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .memory-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 1.5rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #6a994e;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #6a994e;
+        }
+        
+        .memory-date {
+            color: #6a994e;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .memory-location {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .memory-content {
+            margin-bottom: 1rem;
+        }
+        
+        .memory-media {
+            margin-top: 1rem;
+        }
+        
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .photo-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .photo-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .photo-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .video-container {
+            margin-top: 1.5rem;
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .add-memory {
+            background-color: rgba(143, 185, 150, 0.1);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #6a994e;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #8fb996;
+            box-shadow: 0 0 0 2px rgba(143, 185, 150, 0.2);
+        }
+        
+        button {
+            background-color: #6a994e;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #4a7c32;
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            background-color: rgba(106, 153, 78, 0.9);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            nav li {
+                margin: 0;
+                text-align: center;
+            }
+            
+            nav a {
+                border-bottom: 1px solid rgba(143, 185, 150, 0.2);
+            }
+            
+            .family-members {
+                grid-template-columns: 1fr;
+            }
+            
+            .photo-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Family Memory</h1>
+    </header>
+    
+    <nav>
+        <div class="nav-container">
+            <ul>
+                <li><a href="#home">首页</a></li>
+                <li><a href="#family">家庭成员</a></li>
+                <li><a href="#memories">家庭记忆</a></li>
+                <li><a href="#videos">视频回忆</a></li>
+                <li><a href="#add">添加记忆</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <section id="family">
+            <h2>家庭成员</h2>
+            <div class="family-members">
+                <div class="member-card">
+                    <div class="member-avatar" style="position: relative; cursor: pointer; overflow: hidden;">
+                        <span>爸</span>
+                        <input type="file" accept="image/*" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;" onchange="previewImage(this, 'father')">
+                    </div>
+                    <h3 contenteditable="true" style="cursor: text;" onblur="saveMemberInfo(this, 'father', 'name')">爸爸</h3>
+                    <p contenteditable="true" style="cursor: text;" onblur="saveMemberInfo(this, 'father', 'desc')">家庭的顶梁柱，总是默默为我们付出，是我们最坚实的后盾。</p>
+                </div>
+                <div class="member-card">
+                    <div class="member-avatar" style="position: relative; cursor: pointer; overflow: hidden;">
+                        <span>妈</span>
+                        <input type="file" accept="image/*" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;" onchange="previewImage(this, 'mother')">
+                    </div>
+                    <h3 contenteditable="true" style="cursor: text;" onblur="saveMemberInfo(this, 'mother', 'name')">妈妈</h3>
+                    <p contenteditable="true" style="cursor: text;" onblur="saveMemberInfo(this, 'mother', 'desc')">家庭的温暖源泉，用爱呵护着每一个家庭成员，是我们最温柔的港湾。</p>
+                </div>
+                <div class="member-card">
+                    <div class="member-avatar" style="position: relative; cursor: pointer; overflow: hidden;">
+                        <span>姐</span>
+                        <input type="file" accept="image/*" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;" onchange="previewImage(this, 'sister1')">
+                    </div>
+                    <h3 contenteditable="true" style="cursor: text;" onblur="saveMemberInfo(this, 'sister1', 'name')">姐姐</h3>
+                    <p contenteditable="true" style="cursor: text;" onblur="saveMemberInfo(this, 'sister1', 'desc')">贴心的大姐姐，总是照顾着弟弟妹妹，是我们的好榜样。</p>
+                </div>
+                <div class="member-card">
+                    <div class="member-avatar" style="position: relative; cursor: pointer; overflow: hidden;">
+                        <span>妹</span>
+                        <input type="file" accept="image/*" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;" onchange="previewImage(this, 'sister2')">
+                    </div>
+                    <h3 contenteditable="true" style="cursor: text;" onblur="saveMemberInfo(this, 'sister2', 'name')">妹妹</h3>
+                    <p contenteditable="true" style="cursor: text;" onblur="saveMemberInfo(this, 'sister2', 'desc')">活泼可爱的小妹妹，给家庭带来了无数的欢乐和笑声。</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="memories">
+            <h2>家庭记忆</h2>
+            <div class="memory-timeline">
+                <div class="memory-item" id="memory-1">
+                    <div class="memory-date" contenteditable="true" style="cursor: text;">2026年春节</div>
+                    <div class="memory-location" contenteditable="true" style="cursor: text;">家里</div>
+                    <div class="memory-content">
+                        <p contenteditable="true" style="cursor: text;">今年的春节特别温馨，全家人聚在一起吃团圆饭，一起看春晚，一起放鞭炮。爸爸做了他最拿手的红烧肉，妈妈包了我们最爱吃的饺子，姐姐和妹妹一起表演了节目，整个家里充满了欢声笑语。</p>
+                    </div>
+                    <div class="memory-media">
+                        <div class="photo-gallery">
+                            <div class="photo-item">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=happy%20family%20celebrating%20spring%20festival%20at%20home%2C%20traditional%20chinese%20new%20year%20dinner&image_size=landscape_4_3" alt="春节团圆饭">
+                            </div>
+                            <div class="photo-item">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20watching%20spring%20festival%20gala%20together%2C%20happy%20and%20warm%20atmosphere&image_size=landscape_4_3" alt="看春晚">
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="deleteMemory('memory-1')" style="margin-top: 10px; padding: 5px 10px; font-size: 0.8rem;">删除记忆</button>
+                </div>
+                
+                <div class="memory-item" id="memory-2">
+                    <div class="memory-date" contenteditable="true" style="cursor: text;">2025年暑假</div>
+                    <div class="memory-location" contenteditable="true" style="cursor: text;">三亚</div>
+                    <div class="memory-content">
+                        <p contenteditable="true" style="cursor: text;">我们全家一起去了三亚旅行，在海边度过了一个愉快的暑假。我们一起在沙滩上堆沙堡，一起在海里游泳，一起看日落。晚上我们在海边烧烤，听着海浪的声音，感觉特别幸福。</p>
+                    </div>
+                    <div class="memory-media">
+                        <div class="photo-gallery">
+                            <div class="photo-item">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20playing%20on%20the%20beach%2C%20building%20sandcastle%2C%20happy%20smiles&image_size=landscape_4_3" alt="沙滩堆沙堡">
+                            </div>
+                            <div class="photo-item">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20watching%20sunset%20at%20the%20beach%2C%20romantic%20and%20warm%20atmosphere&image_size=landscape_4_3" alt="看日落">
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="deleteMemory('memory-2')" style="margin-top: 10px; padding: 5px 10px; font-size: 0.8rem;">删除记忆</button>
+                </div>
+                
+                <div class="memory-item" id="memory-3">
+                    <div class="memory-date" contenteditable="true" style="cursor: text;">2025年妹妹生日</div>
+                    <div class="memory-location" contenteditable="true" style="cursor: text;">家里</div>
+                    <div class="memory-content">
+                        <p contenteditable="true" style="cursor: text;">今天是妹妹的生日，我们为她准备了一个惊喜派对。爸爸买了一个大蛋糕，妈妈做了妹妹最爱吃的菜，姐姐为她准备了礼物，我为她画了一幅画。妹妹看到这些惊喜，开心得不得了，这是她最难忘的生日。</p>
+                    </div>
+                    <div class="memory-media">
+                        <div class="photo-gallery">
+                            <div class="photo-item">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20celebrating%20birthday%20party%2C%20cake%20with%20candles%2C%20happy%20child&image_size=landscape_4_3" alt="妹妹生日">
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="deleteMemory('memory-3')" style="margin-top: 10px; padding: 5px 10px; font-size: 0.8rem;">删除记忆</button>
+                </div>
+            </div>
+        </section>
+        
+
+        
+        <section id="videos">
+            <h2>视频回忆</h2>
+            <div class="memory-item" id="video-1">
+                <div class="memory-date" contenteditable="true" style="cursor: text;">2025年圣诞节</div>
+                <div class="memory-location" contenteditable="true" style="cursor: text;">家里</div>
+                <div class="memory-content">
+                    <p contenteditable="true" style="cursor: text;">圣诞节那天，我们全家一起装饰圣诞树，交换礼物，度过了一个温馨的圣诞节。这是我们第一次一起过圣诞节，大家都很开心。</p>
+                </div>
+                <div class="video-container" style="display: flex; align-items: center; justify-content: center; background-color: #f9f5f0; position: relative;">
+                    <!-- 视频占位符 -->
+                    <p contenteditable="true" style="font-size: 1.2rem; color: #666; cursor: text;">视频回忆将显示在这里</p>
+                    <input type="file" accept="video/*" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;" onchange="previewVideo(this, 'video-1')">
+                </div>
+                <button onclick="deleteMemory('video-1')" style="margin-top: 10px; padding: 5px 10px; font-size: 0.8rem;">删除记忆</button>
+            </div>
+        </section>
+        
+        <section id="add">
+            <h2>添加新记忆</h2>
+            <div class="add-memory">
+                <form>
+                    <div class="form-group">
+                        <label for="date">日期</label>
+                        <input type="date" id="date" name="date">
+                    </div>
+                    <div class="form-group">
+                        <label for="location">地点</label>
+                        <input type="text" id="location" name="location" placeholder="请输入地点">
+                    </div>
+                    <div class="form-group">
+                        <label for="content">文案</label>
+                        <textarea id="content" name="content" rows="4" placeholder="请输入记忆内容"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="photos">照片</label>
+                        <input type="file" id="photos" name="photos" multiple>
+                    </div>
+                    <div class="form-group">
+                        <label for="video">视频</label>
+                        <input type="file" id="video" name="video">
+                    </div>
+                    <button type="submit">添加记忆</button>
+                </form>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+    </footer>
+    
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                window.scrollTo({
+                    top: targetElement.offsetTop - 70,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // 表单提交处理
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('记忆添加成功！');
+            this.reset();
+        });
+        
+        // 图片预览功能
+        function previewImage(input, member) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const avatar = input.parentElement;
+                    avatar.style.backgroundImage = `url(${e.target.result})`;
+                    avatar.style.backgroundSize = 'cover';
+                    avatar.style.backgroundPosition = 'center';
+                    avatar.querySelector('span').style.display = 'none';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        // 保存家庭成员信息
+        function saveMemberInfo(element, member, type) {
+            // 这里可以添加保存逻辑，例如存储到localStorage或发送到服务器
+            console.log(`保存${member}的${type}信息: ${element.textContent}`);
+        }
+        
+        // 删除记忆
+        function deleteMemory(id) {
+            if (confirm('确定要删除这个记忆吗？')) {
+                const memoryItem = document.getElementById(id);
+                if (memoryItem) {
+                    memoryItem.remove();
+                }
+            }
+        }
+        
+        // 视频预览功能
+        function previewVideo(input, videoId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const videoContainer = input.parentElement;
+                    videoContainer.innerHTML = '';
+                    const video = document.createElement('video');
+                    video.src = e.target.result;
+                    video.controls = true;
+                    video.style.width = '100%';
+                    video.style.height = '100%';
+                    videoContainer.appendChild(video);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+
+    </script>
+</body>
+</html>
